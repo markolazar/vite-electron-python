@@ -39,7 +39,7 @@ app.add_middleware(
 
 @app.get("/data")
 def read_data():
-    return {"message": "Hello from FastAPI!"}
+    return {"message": "Hello from python FastAPI!"}
 
 
 if __name__ == "__main__":

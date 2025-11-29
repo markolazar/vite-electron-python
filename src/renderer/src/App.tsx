@@ -1,6 +1,6 @@
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 function App(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
@@ -9,19 +9,15 @@ function App(): React.JSX.Element {
 
   const [data, setData] = useState('')
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await fetch(`http://localhost:${backendPort}/data`)
-        const jsonData = await response.json()
-        setData(jsonData.message)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+  const fetchData = async (): Promise<void> => {
+    try {
+      const response = await fetch(`http://localhost:${backendPort}/data`)
+      const jsonData = await response.json()
+      setData(jsonData.message)
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
-
-    fetchData()
-  }, [backendPort])
+  }
 
   return (
     <>
@@ -47,7 +43,7 @@ function App(): React.JSX.Element {
           </a>
         </div>
         <div className="action">
-          <a>{data || 'Loading...'}</a>
+          <a onClick={fetchData} style={{ cursor: 'pointer' }}>{data || 'Click me'}</a>
         </div>
       </div>
       <Versions></Versions>
