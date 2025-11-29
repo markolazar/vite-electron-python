@@ -21,7 +21,7 @@ function resolveResource(...segments: string[]): string {
 
 const backendPath = resolveResource(
   'vite-electron-python-backend',
-  'vite-electron-python-backend.exe'
+  process.platform === 'win32' ? 'vite-electron-python-backend.exe' : 'vite-electron-python-backend'
 )
 let backendProcess: ChildProcessWithoutNullStreams
 
@@ -89,6 +89,12 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  app.on('before-quit', () => {
+    if (app.isPackaged && backendProcess) {
+      backendProcess.kill('SIGKILL')
+    }
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -96,7 +102,7 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    if (app.isPackaged) {
+    if (app.isPackaged && backendProcess) {
       backendProcess.kill('SIGKILL')
     }
     app.quit()
