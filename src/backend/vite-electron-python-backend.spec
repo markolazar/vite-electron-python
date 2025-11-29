@@ -42,3 +42,9 @@ coll = COLLECT(
     upx_exclude=[],
     name='vite-electron-python-backend',
 )
+app = BUNDLE(
+    coll,
+    name='vite-electron-python-backend.app',
+    icon=None,
+    bundle_identifier=None,
+)
