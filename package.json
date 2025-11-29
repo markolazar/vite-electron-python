@@ -19,9 +19,10 @@
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:backend:win": ".\\.venv\\Scripts\\activate && cd src\\backend && pyinstaller main.py --add-data assets:assets --noconfirm --noconsole --clean --name vite-electron-python-backend",
+    "build:backend:mac": "source .venv/bin/activate && cd src/backend && pyinstaller main.py --add-data assets:assets --noconfirm --noconsole --clean --name vite-electron-python-backend",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build:backend:win && npm run build && electron-builder --win",
-    "build:mac": "electron-vite build && electron-builder --mac",
+    "build:mac": "npm run build:backend:mac && electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux"
   },
   "dependencies": {
